@@ -8,361 +8,669 @@
     <meta name="copyright" content="© 2026 Microdosis Educativa. Todos los derechos reservados.">
     <meta name="description" content="Juego educativo Memorama para preescolar. Microdosis Educativa, Acapulco.">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ══════════════════════════════════════════════════════
+   MICRODOSIS EDUCATIVA — MEMORAMA PROFESIONAL
+   Diseño: Plataforma educativa especializada · 2026
+   ══════════════════════════════════════════════════════ */
 
-        /* ══ MARCA DE AGUA PERMANENTE ══ */
-        body::before {
-            content: '© Microdosis Educativa';
-            position: fixed;
-            bottom: 8px;
-            right: 12px;
-            font-size: 0.72em;
-            color: rgba(255,255,255,0.7);
-            pointer-events: none;
-            z-index: 99999;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
 
-        body {
-            font-family: 'Arial Rounded MT Bold', 'Fredoka One', Arial, sans-serif;
-            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 33%, #4ECDC4 66%, #45B7D1 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+/* ── Variables ─────────────────────────────────────── */
+:root {
+  --primary:    #6C3CE1;
+  --primary-dk: #4A2AAA;
+  --primary-lt: #9B6DFF;
+  --secondary:  #FF6B35;
+  --gold:       #FFD166;
+  --teal:       #06D6A0;
+  --sky:        #118AB2;
+  --rose:       #FF6B9D;
+  --bg-1:       #0D0B2A;
+  --bg-2:       #1A1048;
+  --bg-3:       #120E35;
+  --glass:      rgba(255,255,255,0.07);
+  --glass-b:    rgba(255,255,255,0.15);
+  --white:      #ffffff;
+  --text-dark:  #1a1048;
+  --shadow:     0 8px 32px rgba(0,0,0,0.5);
+  --radius:     20px;
+  --radius-sm:  12px;
+}
 
-        @keyframes gradientShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+/* ── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-        /* ══ PANTALLA INICIO ══════════════════════════════════ */
-        .pantalla-inicio {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
+html, body {
+  min-height: 100%;
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  color: var(--white);
+  overflow-x: hidden;
+  background: linear-gradient(145deg, #0D0B2A 0%, #1A0E3F 35%, #150A38 65%, #0A1628 100%);
+  background-attachment: fixed;
+}
 
-        .mascota {
-            font-size: 5em;
-            display: inline-block;
-            animation: flotar 2s ease-in-out infinite;
-            margin-bottom: 5px;
-        }
+/* ── Marca de agua permanente (nueva versión) ─────── */
+body::before {
+  content: '© Microdosis Educativa';
+  position: fixed;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.68em;
+  color: rgba(255,255,255,0.22);
+  pointer-events: none;
+  z-index: 9990;
+  letter-spacing: 0.5px;
+  font-family: 'Nunito', sans-serif;
+}
 
-        @keyframes flotar {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-15px); }
-        }
+/* ── Decoración de fondo ───────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(108,60,225,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(6,214,160,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 60% at 60% 10%, rgba(255,107,53,0.09) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
 
-        .titulo-principal {
-            font-size: 3.5em;
-            color: white;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
-            margin-bottom: 8px;
-            animation: bounce 1.2s ease-in-out infinite alternate;
-        }
+/* ══════════════════════════════════════════════════════
+   PANTALLA INICIO
+   ══════════════════════════════════════════════════════ */
 
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to   { transform: translateY(-10px); }
-        }
+.pantalla-inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 28px 16px 44px;
+  position: relative;
+  z-index: 1;
+}
 
-        .subtitulo {
-            font-size: 1.2em;
-            color: white;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
-            margin-bottom: 35px;
-            opacity: 0.95;
-            line-height: 1.5;
-        }
+/* ── Logo ───────────────────────────────────────────── */
+.pantalla-inicio img {
+  width: min(280px, 62vw);
+  filter: drop-shadow(0 6px 28px rgba(108,60,225,0.55));
+  animation: logoFloat 4s ease-in-out infinite;
+  margin-bottom: 6px;
+}
 
-        .temas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 16px;
-            max-width: 900px;
-            width: 100%;
-        }
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-9px); }
+}
 
-        .tema-card {
-            background: white;
-            border-radius: 25px;
-            padding: 22px 16px;
-            cursor: pointer;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border: 4px solid transparent;
-            user-select: none;
-        }
+/* ── Ocultar mascota antigua ───────────────────────── */
+.mascota { display: none; }
 
-        .tema-card:hover  { transform: translateY(-8px) scale(1.04); box-shadow: 0 16px 35px rgba(0,0,0,0.22); }
-        .tema-card:active { transform: scale(0.97); }
+/* ── Título principal ──────────────────────────────── */
+.titulo-principal {
+  font-family: 'Fredoka One', 'Nunito', cursive;
+  font-size: clamp(2.4rem, 9vw, 4.2rem);
+  background: linear-gradient(135deg, #FFD166 0%, #FF6B35 35%, #FF6B9D 65%, #9B6DFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 8px;
+  text-align: center;
+  animation: titlePulse 3.5s ease-in-out infinite;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
 
-        .tema-card[data-tema="animales"]  { border-color: #4CAF50; }
-        .tema-card[data-tema="frutas"]    { border-color: #FF9800; }
-        .tema-card[data-tema="familia"]   { border-color: #E91E63; }
-        .tema-card[data-tema="emociones"] { border-color: #9C27B0; }
-        .tema-card[data-tema="acapulco"]  { border-color: #03A9F4; }
-        .tema-card[data-tema="numeros"]   { border-color: #F44336; }
+@keyframes titlePulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.028); }
+}
 
-        .tema-icon   { font-size: 3.2em; display: block; margin-bottom: 8px; }
-        .tema-titulo { font-size: 1.15em; color: #333; font-weight: bold; margin-bottom: 4px; }
-        .tema-desc   { font-size: 0.8em;  color: #888; }
+/* ── Subtítulo ──────────────────────────────────────── */
+.subtitulo {
+  font-size: clamp(0.82rem, 3.2vw, 1rem);
+  color: rgba(255,255,255,0.72);
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+  line-height: 1.65;
+}
 
-        /* ══ PANTALLA JUEGO ═══════════════════════════════════ */
-        .pantalla-juego {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 12px 15px;
-        }
+/* ── Separador decorativo ──────────────────────────── */
+.subtitulo::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-lt), var(--teal));
+  border-radius: 2px;
+  margin: 14px auto 0;
+}
 
-        .juego-header {
-            background: rgba(255,255,255,0.93);
-            border-radius: 20px;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 12px;
-            width: 100%;
-            max-width: 640px;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.12);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+/* ── Cuadrícula de temas ────────────────────────────── */
+.temas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 36px;
+}
 
-        .info-block  { text-align: center; }
-        .info-label  { font-size: 0.68em; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-value  { font-size: 1.55em; color: #333; font-weight: bold; line-height: 1; }
+/* ── Tarjetas de tema ───────────────────────────────── */
+.tema-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 12px 18px;
+  border-radius: 22px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s ease;
+  border: 2px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.12);
+  text-align: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
 
-        .btn-menu {
-            background: #FF6B6B;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 8px 15px;
-            font-size: 0.9em;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            transition: background 0.2s, transform 0.15s;
-        }
-        .btn-menu:hover  { background: #ff5252; transform: scale(1.06); }
-        .btn-menu:active { transform: scale(0.96); }
+.tema-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  border-radius: inherit;
+}
 
-        .tema-badge {
-            background: white;
-            border-radius: 20px;
-            padding: 5px 18px;
-            font-size: 0.95em;
-            color: #555;
-            margin-bottom: 10px;
-            display: inline-block;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
+.tema-card:hover,
+.tema-card:active {
+  transform: translateY(-7px) scale(1.04);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.2);
+}
 
-        /* ── Tablero ── */
-        .tablero {
-            display: grid;
-            gap: 10px;
-            max-width: 640px;
-            width: 100%;
-        }
+.tema-card:hover::before,
+.tema-card:active::before { opacity: 1; }
 
-        .tablero-4x4 { grid-template-columns: repeat(4, 1fr); }
-        .tablero-4x3 { grid-template-columns: repeat(4, 1fr); }
+/* Gradientes únicos por tema */
+.tema-card[data-tema="animales"] {
+  background: linear-gradient(135deg, rgba(6,214,160,0.28), rgba(17,138,178,0.18));
+  border-color: rgba(6,214,160,0.38);
+}
+.tema-card[data-tema="animales"]::before {
+  background: linear-gradient(135deg, rgba(6,214,160,0.14), rgba(17,138,178,0.08));
+}
 
-        /* ── Carta ── */
-        .carta {
-            aspect-ratio: 1;
-            cursor: pointer;
-            perspective: 700px;
-            -webkit-tap-highlight-color: transparent;
-        }
+.tema-card[data-tema="frutas"] {
+  background: linear-gradient(135deg, rgba(255,107,53,0.28), rgba(255,209,102,0.18));
+  border-color: rgba(255,107,53,0.38);
+}
+.tema-card[data-tema="frutas"]::before {
+  background: linear-gradient(135deg, rgba(255,107,53,0.14), rgba(255,209,102,0.08));
+}
 
-        .carta-inner {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+.tema-card[data-tema="familia"] {
+  background: linear-gradient(135deg, rgba(255,107,157,0.28), rgba(255,209,102,0.18));
+  border-color: rgba(255,107,157,0.38);
+}
+.tema-card[data-tema="familia"]::before {
+  background: linear-gradient(135deg, rgba(255,107,157,0.14), rgba(255,209,102,0.08));
+}
 
-        .carta.volteada .carta-inner,
-        .carta.encontrada .carta-inner {
-            transform: rotateY(180deg);
-        }
+.tema-card[data-tema="emociones"] {
+  background: linear-gradient(135deg, rgba(255,209,102,0.28), rgba(255,107,53,0.18));
+  border-color: rgba(255,209,102,0.38);
+}
+.tema-card[data-tema="emociones"]::before {
+  background: linear-gradient(135deg, rgba(255,209,102,0.14), rgba(255,107,53,0.08));
+}
 
-        .carta-frente,
-        .carta-reverso {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 4px;
-        }
+.tema-card[data-tema="acapulco"] {
+  background: linear-gradient(135deg, rgba(17,138,178,0.32), rgba(6,214,160,0.18));
+  border-color: rgba(17,138,178,0.45);
+}
+.tema-card[data-tema="acapulco"]::before {
+  background: linear-gradient(135deg, rgba(17,138,178,0.18), rgba(6,214,160,0.09));
+}
 
-        .carta-frente {
-            background: linear-gradient(145deg, #1a472a, #2d6a4f);
-            border: 3px solid rgba(255,255,255,0.25);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-size: 2em;
-            color: rgba(255,255,255,0.7);
-        }
+.tema-card[data-tema="numeros"] {
+  background: linear-gradient(135deg, rgba(108,60,225,0.32), rgba(155,109,255,0.18));
+  border-color: rgba(108,60,225,0.45);
+}
+.tema-card[data-tema="numeros"]::before {
+  background: linear-gradient(135deg, rgba(108,60,225,0.18), rgba(155,109,255,0.09));
+}
 
-        .carta-reverso {
-            background: white;
-            transform: rotateY(180deg);
-            border: 3px solid #e0e0e0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-            font-size: 2.6em;
-        }
+.tema-icon {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.38));
+  transition: transform 0.3s ease;
+}
 
-        .carta-reverso .carta-nombre {
-            font-size: 0.28em;
-            color: #555;
-            text-align: center;
-            line-height: 1.2;
-            padding: 0 4px;
-        }
+.tema-card:hover .tema-icon,
+.tema-card:active .tema-icon {
+  transform: scale(1.18) rotate(-6deg);
+}
 
-        .carta.encontrada .carta-reverso {
-            background: linear-gradient(145deg, #e8f5e9, #c8e6c9);
-            border-color: #4CAF50;
-            animation: celebrar 0.45s ease;
-        }
+.tema-titulo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.95rem;
+  color: var(--white);
+  margin-bottom: 4px;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
 
-        @keyframes celebrar {
-            0%   { transform: rotateY(180deg) scale(1); }
-            40%  { transform: rotateY(180deg) scale(1.18); }
-            100% { transform: rotateY(180deg) scale(1); }
-        }
+.tema-desc {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.3;
+}
 
-        /* ══ PANTALLA GANADOR ════════════════════════════════ */
-        .pantalla-ganador {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
+/* ── Nivel chip en tarjeta ─────────────────────────── */
+.tema-nivel {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50px;
+  padding: 2px 8px;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
 
-        .ganador-card {
-            background: white;
-            border-radius: 30px;
-            padding: 35px 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            max-width: 480px;
-            width: 100%;
-        }
+/* ══════════════════════════════════════════════════════
+   PANTALLA JUEGO
+   ══════════════════════════════════════════════════════ */
 
-        .ganador-emoji {
-            font-size: 5em;
-            display: block;
-            margin-bottom: 10px;
-            animation: oscilar 1s ease-in-out infinite alternate;
-        }
+.pantalla-juego {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px 12px 32px;
+  position: relative;
+  z-index: 1;
+}
 
-        @keyframes oscilar {
-            from { transform: rotate(-12deg) scale(1); }
-            to   { transform: rotate(12deg)  scale(1.1); }
-        }
+/* ── HUD / Header ───────────────────────────────────── */
+.juego-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  margin-bottom: 14px;
+}
 
-        .ganador-titulo {
-            font-size: 2.5em;
-            color: #FF6B6B;
-            margin-bottom: 8px;
-        }
+.btn-menu {
+  background: linear-gradient(135deg, var(--secondary) 0%, #d44f10 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(255,107,53,0.45);
+  letter-spacing: 0.2px;
+}
 
-        .ganador-frase {
-            color: #666;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
+.btn-menu:hover {
+  transform: scale(1.07);
+  box-shadow: 0 7px 22px rgba(255,107,53,0.65);
+}
 
-        .ganador-stats {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
+.info-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
 
-        .stat-box {
-            background: #f5f5f5;
-            border-radius: 15px;
-            padding: 14px 18px;
-            text-align: center;
-            min-width: 90px;
-        }
+.info-label {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.52);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 800;
+}
 
-        .stat-valor { font-size: 1.9em; color: #333; display: block; font-weight: bold; }
-        .stat-label { font-size: 0.78em; color: #888; }
+.info-value {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  color: var(--gold);
+  line-height: 1.1;
+}
 
-        .btn-jugar-otro {
-            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 16px 36px;
-            font-size: 1.25em;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            transition: transform 0.25s, box-shadow 0.25s;
-            box-shadow: 0 8px 20px rgba(255,107,107,0.4);
-            width: 100%;
-        }
+/* ── Badge de tema ──────────────────────────────────── */
+.tema-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--primary-lt));
+  color: var(--white);
+  border-radius: 50px;
+  padding: 7px 24px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 18px rgba(108,60,225,0.45);
+  letter-spacing: 0.5px;
+}
 
-        .btn-jugar-otro:hover  { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(255,107,107,0.5); }
-        .btn-jugar-otro:active { transform: scale(0.97); }
+/* ── Tablero ────────────────────────────────────────── */
+.tablero {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  max-width: 580px;
+  padding: 0 4px;
+}
 
-        /* ══ CONFETI ════════════════════════════════════════ */
-        .confeti-pieza {
-            position: fixed;
-            width: 11px;
-            height: 11px;
-            border-radius: 2px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: caer linear forwards;
-        }
+.tablero-4x4 {
+  grid-template-columns: repeat(4, 1fr);
+}
 
-        @keyframes caer {
-            0%   { opacity: 1; transform: translateY(-20px) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(110vh) rotate(720deg); }
-        }
+/* ── Cartas ─────────────────────────────────────────── */
+.carta {
+  aspect-ratio: 1;
+  perspective: 900px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease;
+}
 
-        /* ══ RESPONSIVE ═════════════════════════════════════ */
-        @media (max-width: 520px) {
-            .titulo-principal { font-size: 2.4em; }
-            .temas-grid       { grid-template-columns: 1fr 1fr; }
-            .carta-frente     { font-size: 1.6em; }
-            .carta-reverso    { font-size: 2em; }
-        }
+.carta:hover:not(.encontrada) {
+  transform: scale(1.05);
+}
 
-        @media (max-width: 360px) {
-            .temas-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-        }
+.carta-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  border-radius: var(--radius-sm);
+}
+
+.carta.volteada .carta-inner,
+.carta.encontrada .carta-inner {
+  transform: rotateY(180deg);
+}
+
+.carta-frente,
+.carta-reverso {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Reverso de la carta — diseño profesional */
+.carta-frente {
+  background: linear-gradient(145deg, #4A2AAA 0%, #6C3CE1 50%, #5A32C8 100%);
+  border: 2px solid rgba(155,109,255,0.45);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.carta-frente::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1.5px solid rgba(255,255,255,0.14);
+  border-radius: 7px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    rgba(255,255,255,0.03) 5px,
+    rgba(255,255,255,0.03) 10px
+  );
+}
+
+/* Frente de la carta — revelada */
+.carta-reverso {
+  background: linear-gradient(145deg, #ffffff 0%, #f4f0ff 100%);
+  transform: rotateY(180deg);
+  font-size: clamp(1.8rem, 5.5vw, 2.5rem);
+  color: var(--text-dark);
+  border: 2px solid rgba(108,60,225,0.25);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+}
+
+.carta-nombre {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: clamp(0.52rem, 2vw, 0.76rem);
+  color: var(--primary-dk);
+  margin-top: 3px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* Carta encontrada — brillo teal */
+.carta.encontrada .carta-reverso {
+  background: linear-gradient(145deg, #eafffa 0%, #c8f7ec 100%);
+  border-color: var(--teal);
+  box-shadow:
+    0 0 0 3px rgba(6,214,160,0.38),
+    0 6px 22px rgba(6,214,160,0.3);
+  animation: foundPop 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes foundPop {
+  0%   { transform: rotateY(180deg) scale(0.88); }
+  100% { transform: rotateY(180deg) scale(1); }
+}
+
+.carta.encontrada .carta-nombre {
+  color: #0a6b4a;
+}
+
+/* ══════════════════════════════════════════════════════
+   PANTALLA GANADOR
+   ══════════════════════════════════════════════════════ */
+
+.pantalla-ganador {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.ganador-card {
+  background: linear-gradient(145deg, #ffffff, #faf6ff);
+  color: var(--text-dark);
+  border-radius: 30px;
+  padding: 44px 32px 38px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow:
+    0 28px 80px rgba(0,0,0,0.58),
+    0 0 0 2px rgba(255,255,255,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  animation: cardEntrada 0.55s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes cardEntrada {
+  from { transform: scale(0.65) translateY(50px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.ganador-emoji {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 10px;
+  animation: trophySpin 0.8s ease-out, trophyFloat 3s ease-in-out 0.8s infinite;
+  filter: drop-shadow(0 4px 16px rgba(255,209,102,0.6));
+}
+
+@keyframes trophySpin {
+  from { transform: rotate(-25deg) scale(0.4); opacity: 0; }
+  to   { transform: rotate(0deg)   scale(1);   opacity: 1; }
+}
+
+@keyframes trophyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.ganador-titulo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.6rem;
+  background: linear-gradient(135deg, #6C3CE1, #FF6B35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.ganador-frase {
+  font-size: 1rem;
+  color: rgba(26,16,72,0.7);
+  margin-bottom: 28px;
+  line-height: 1.55;
+}
+
+.ganador-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #f5f0ff, #ede8ff);
+  border-radius: 14px;
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5px solid rgba(108,60,225,0.14);
+  box-shadow: 0 2px 8px rgba(108,60,225,0.08);
+}
+
+.stat-valor {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.55rem;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 3px;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  color: rgba(26,16,72,0.58);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 800;
+}
+
+.btn-jugar-otro {
+  display: inline-block;
+  background: linear-gradient(135deg, #6C3CE1 0%, #9B6DFF 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  padding: 15px 40px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: transform 0.22s, box-shadow 0.22s;
+  box-shadow: 0 8px 28px rgba(108,60,225,0.52);
+  letter-spacing: 0.5px;
+}
+
+.btn-jugar-otro:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 14px 36px rgba(108,60,225,0.72);
+}
+
+/* ══════════════════════════════════════════════════════
+   CONFETI
+   ══════════════════════════════════════════════════════ */
+
+.confeti-pieza {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: confetiFall linear forwards;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@keyframes confetiFall {
+  0%   { transform: rotate(0deg) scale(1);     opacity: 1; top: -15px; }
+  80%  { opacity: 1; }
+  100% { transform: rotate(720deg) scale(0.4); opacity: 0; top: 105vh; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════ */
+
+@media (max-width: 540px) {
+  .temas-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 380px;
+    gap: 12px;
+  }
+  .tablero-4x4 { gap: 8px; }
+  .carta-frente  { font-size: 1.7rem; }
+  .carta-reverso { font-size: 1.9rem; }
+  .juego-header  { padding: 8px 12px; gap: 6px; }
+  .btn-menu      { padding: 6px 12px; font-size: 0.78rem; }
+  .info-value    { font-size: 1.05rem; }
+  .ganador-card  { padding: 32px 22px 28px; }
+  .ganador-emoji { font-size: 4rem; }
+  .ganador-titulo { font-size: 2.1rem; }
+}
+
+@media (max-width: 380px) {
+  .temas-grid { gap: 10px; }
+  .tema-card  { padding: 16px 10px 14px; }
+  .tema-icon  { font-size: 2.3rem; }
+  .carta-frente  { font-size: 1.5rem; }
+  .carta-reverso { font-size: 1.7rem; }
+  .ganador-stats { gap: 8px; }
+  .stat-valor    { font-size: 1.3rem; }
+}
+
     </style>
 </head>
 <body>
